@@ -28,6 +28,8 @@ const server = http.createServer((req, res) => {
         myurl += 'index.html' 
     } else if (req.url == "/about") { 
         myurl += 'about.html' 
+    } else if (req.url == "/unique") { 
+        myurl += 'unique.html' 
     } else { 
         myurl += 'error.html' 
     }

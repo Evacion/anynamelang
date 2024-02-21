@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>Fate Grand Order Servants</head>
+    <body>
+        <div>
+            <label for="sortName">Search Bar</label>
+            <input type="text" id="sortName" name="sortName">
+            <button type="button" id="searchButton">Search</button>
+        </div>
+        <div id="tableLoc"></div>
+    </body>
+    <script type="text/javascript" src="../scripts/unique.js">
+        
+        document.getElementById("searchButton").addEventListener('click', function() {
+            var sortName = document.getElementById("sortName").value;
+            console.log(sortName);
+            if (sortName.length > 0) {
+                tableData = getServant(sortName);
+            }
+        });
+
+    </script>
+</html>
