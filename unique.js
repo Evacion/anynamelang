@@ -1,24 +1,9 @@
-// import { 
-//     Button, 
-//     Card, 
-//     CardActions, 
-//     CardContent, 
-//     CardHeader, 
-//     CardMedia,
-//     Grid,
-//     Typography 
-// } from '@mui/material';
-// import { 
-//     useState, 
-//     // setState 
-// } from 'react';
-// const mymodule = require("./mymodule")
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-// const apiUrl = "https://api.atlasacademy.io/export/NA/nice_servant.json"
 function getServants(sortName) {
+    // const apiUrl = "https://api.atlasacademy.io/export/NA/nice_servant.json"
     const apiUrl = "https://api.atlasacademy.io/export/JP/nice_servant_lang_en.json"
     let tableHeaders = ["Collection No.", "Image", "Servant Class", "Servant Name"]
     let tableData = []
@@ -56,6 +41,6 @@ function getServants(sortName) {
     return tableData;
 }
 
-module.exports = {
+export default {
     getServants, 
 }

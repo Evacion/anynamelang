@@ -1,10 +1,4 @@
-const express = require("express")
-const app = express()
-const port = 8000
-
-app.listen(port, () => (
-    console.log(`Server Conencted to Port ${port}`)
-))
+import { getServants } from "unique.js";
 
 const http = require('http')
 const fs = require('fs')
@@ -33,5 +27,5 @@ const server = http.createServer((req, res) => {
 })
 
 server.listen(8000, 'localhost', () => {
-    console.log("listen")    
+    console.log("[NAVI]: Hey, Listen.")    
 })
