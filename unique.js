@@ -1,16 +1,31 @@
-const mymodule = require("./mymodule")
-
+// import { 
+//     Button, 
+//     Card, 
+//     CardActions, 
+//     CardContent, 
+//     CardHeader, 
+//     CardMedia,
+//     Grid,
+//     Typography 
+// } from '@mui/material';
+// import { 
+//     useState, 
+//     // setState 
+// } from 'react';
+// const mymodule = require("./mymodule")
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 // const apiUrl = "https://api.atlasacademy.io/export/NA/nice_servant.json"
-function getServant(sortName) {const apiUrl = "https://api.atlasacademy.io/export/JP/nice_servant_lang_en.json"
-    let tableHeaders = ["Collection No.", "Servant Class", "Servant Name"]
+function getServants(sortName) {
+    const apiUrl = "https://api.atlasacademy.io/export/JP/nice_servant_lang_en.json"
+    let tableHeaders = ["Collection No.", "Image", "Servant Class", "Servant Name"]
     let tableData = []
 
     console.log(`[${mymodule.fullname}] Fetching Data for ${sortName}...`)
-    fetch (apiUrl).then(response => {
+    //let servantDataRaw = 
+    fetch(apiUrl).then(response => {
         if (!response.ok) {throw new Error("Network has no response!!!");}
         return response.json();
     }).then(data => {
@@ -18,7 +33,11 @@ function getServant(sortName) {const apiUrl = "https://api.atlasacademy.io/expor
             if (servant.name.toUpperCase().includes(sortName.toUpperCase())) {
                 var servantData = `[${servant.collectionNo}][${capitalizeFirstLetter(servant.className)}] ${servant.name}:`;
                 console.log(servantData); // ${servant.originalName}
-                tableData.append(servant.collectionNo, servant.className, servant.name)
+                
+                rawData = [servant.collectionNo, servant.extraAssets.faces.ascension[3] , servant.className, servant.name]
+                rawData.forEach(dt => { tableData.append(dt) })
+                
+                console.log(rawData);
                 // var skillNames = [];
                 // servant.skills.forEach(skill => {
                 //     var skillTemp = `${skill.name}`;
@@ -37,6 +56,6 @@ function getServant(sortName) {const apiUrl = "https://api.atlasacademy.io/expor
     return tableData;
 }
 
-function createTable(tableData) {
-
+module.exports = {
+    getServants, 
 }
