@@ -1,16 +1,28 @@
 
 const express = require("express")
-const app = express("./unique.js")
+const app = express()
 const port = 8000
 const http = require('http')
 const fs = require('fs')
 
-app.listen(port, () => { console.log(`Server Conencted to Port ${port}`) })
-app.get("/", (req, res) => { return res.sendFile(__dirname + "/index.html") })
-app.get("/error", (req, res) => { return res.sendFile(__dirname + "/error.html") })
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
+app.use('/css', express.static(__dirname + '/node_modules/datatables.net-bs5/css'));
+app.use('/assets', express.static(__dirname + '/assets/'));
+app.use('/scripts', express.static(__dirname + '/scripts/'));
+app.use('/stylesheets', express.static(__dirname + '/stylesheets/'));
+app.use(express.static('public'));
+
+app.listen(port, () => { 
+    console.log(`Server Connected`)
+    console.log(`Port: ${port}`)
+    console.log(`Directory: ${__dirname}`) 
+})
+
+app.get("/", (req, res) => { return res.sendFile(__dirname + "/home.html") })
 app.get("/about", (req, res) => { return res.sendFile(__dirname + "/about.html") })
 app.get("/unique", (req, res) => { return res.sendFile(__dirname + "/unique.html") })
 app.get("/unique.js", (req, res) => { return res.sendFile(__dirname + "/unique.js") })
+app.get("*", (req, res) => { return res.sendFile(__dirname + "/error.html") })
 
 // const server = http.createServer((req, res) => {
 //     console.log(req.url)
