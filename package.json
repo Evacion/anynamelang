@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.15.10",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "datatables.net-bs5": "^2.0.0",
     "datatables.net-dt": "^2.0.0",
     "datatables.net-fixedheader-bs5": "^4.0.0",
