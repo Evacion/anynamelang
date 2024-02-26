@@ -3,10 +3,8 @@
 const sortInput = document.getElementById("sortInput")
 const tableLoc = document.getElementById("tableLoc");
 
-function capitalizeFirstLetter(string) { 
-    return string.charAt(0).toUpperCase() + string.slice(1); 
-}
 function test(e) { tableLoc.innerHTML = `Test Successful. ${e}` }
+function capitalizeFirstLetter(string) { return string.charAt(0).toUpperCase() + string.slice(1); }
 function getRarity(rarity) {
     switch(rarity) {
         case 1:
@@ -124,86 +122,77 @@ async function getServants() {
     } catch (err) {
         console.log(err)
         tableLoc.innerHTML = `<p>Error with API.</p><p>${err}</p>`
-    } finally {
-        // console.log("Done.")
     }
     // searchButton.disabled = false
 }
 
-async function getPokemon() {
+async function getPokemons() {
     const sortName = ""
-    const apiUrl = `pokemon?limit=100000&offset=0`
+    const apiUrl = `https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0`
 
     try {
+        console.log("WHAT")
         const pokeCount = 0
         const response = await fetch(apiUrl, {})
         if (response.status >= 200 && response.status < 300) {
-            data = await response.json();
-            // console.log(data)
-
+            const data = await response.json()
+            console.log(data)
+            
             const table = document.createElement("table")
             const thead = document.createElement("thead")
             const tbody = document.createElement("tbody")
             
             const thRow = document.createElement("tr")
-
-            tableHeaders = ["Dex #", "Name", "Type 1", "Type 2", "HP", "Attack", "Defense", "Sp. Attack", "Sp. Defense", "Speed"]
-
-            tableHeaders.forEach(header, function(){
+            const headers = ["Dex #", "Sprite", "Name", "Type 1", "Type 2", "HP", "Attack", "Defense", "Sp. Attack", "Sp. Defense", "Speed"]
+            headers.forEach(header => {
                 const head = document.createElement("th")
                 head.innerHTML = header
                 thRow.appendChild(head)
             })
             thead.appendChild(thRow)
             table.appendChild(thead)
-            // table.appendChild(tfoot)
-            // tbody.setAttribute('class' , 'tbody-dark')
 
             data.forEach(item => {
-                if (item.name.toLowerCase().includes(sortName)) {
-                    const row = document.createElement("tr")
-                    pokeCount += 1
+                console.log(item)
+                pokeCount += 1
+                try {
+                    const pokemonResponse = fetch(`${item.url}`, {})
+                    if (pokemonResponse.status >= 200 && pokemonResponse.status < 300) {
+                        pokemon = pokemonResponse.json()
+                        pokemon.forEach(pokeData => {
+                            const row = document.createElement("tr")
+                            const pdID = document.createElement("td")   //ID
+                            pdID.innerHTML = pokeData.id
+                            row.appendChild(pdID);
 
-                    const col1 = document.createElement("td")
-                    const col2 = document.createElement("td")
-                    const col3 = document.createElement("td")
-                    const col4 = document.createElement("td")
-                    const col5 = document.createElement("td")
-                    const col6 = document.createElement("td")
-                    const col7 = document.createElement("td")
-                    const col8 = document.createElement("td")
-                    const col9 = document.createElement("td")
-                    const col10 = document.createElement("td")
+                            const pdImg = document.createElement("td")   //Image
+                            const image = document.createElement("img")
+                            image.src = `pokeData.sprites.front_default`
+                            pdImg.appendChild(image)
+                            row.appendChild(pdImg);
 
-                    col1.innerHTML = pokeCount
-                    col2.innerHTML = item.name
-                    col3.innerHTML = item.name
-                    col4.innerHTML = "?"
-                    col5.innerHTML = "?"
-                    col6.innerHTML = item.name
-                    col7.innerHTML = item.name
-                    col8.innerHTML = "?"
-                    col9.innerHTML = "?"
-                    col10.innerHTML = item.name
+                            const pdName = document.createElement("td")   //Name
+                            pdName.innerHTML = pokeData.name
+                            row.appendChild(pdName);
 
-                    row.appendChild(col1);
-                    row.appendChild(col2);
-                    row.appendChild(col3);
-                    row.appendChild(col4);
-                    row.appendChild(col5);
-                    row.appendChild(col6);
-                    row.appendChild(col7);
-                    row.appendChild(col8);
-                    row.appendChild(col9);
-                    row.appendChild(col10);
-                    
+                            pokeData.types.forEach(type => {    //Type 1, Type 2
+                                const pdType = document.createElement("td")
+                                pdType.innerHTML = type
+                                row.appendChild(pdType)
+                            })
 
-                    tbody.appendChild(row)
-                }
+                            pokeData.stats.forEach(stat => {    //HP, ATK, DEF, SPA, SPD, SPE
+                                const pdStat = document.createElement("td")
+                                pdStat.innerHTML = stat
+                                row.appendChild(pdStat)
+                            })
+                            tbody.appendChild(row)
+                        })
+                    }
+                } catch(err) { console.log(err) }
             })
             table.appendChild(tbody)
             tableLoc.innerHTML = ""
-            
             table.setAttribute('id', 'pokeTable')
             table.setAttribute('class', 'table align-middle table-hover table-sm table-striped')
             table.setAttribute('class', 'display')
@@ -214,20 +203,11 @@ async function getPokemon() {
             table.setAttribute('data-page-list', '[10, 20, 50, 100, all]')
             thead.setAttribute('class' , 'h5')
 
-            if (tbody.innerHTML == "") {
-                tableLoc.innerHTML = "<p>No Results.</p>"
-            } else {
-                // dtTable = new DataTable(table)
-                tableLoc.append(table)
-            }
-            // console.log(table)
-        } else {
-            tableLoc.innerHTML = "<p>No Results.</p>"
-        }
+            if (tbody.innerHTML === "") { tableLoc.innerHTML = "<p>No Results.</p>" } 
+            else { tableLoc.append(table) }
+        } else { tableLoc.innerHTML = "<p>No Results.</p>" }
     } catch (err) {
         console.log(err)
         tableLoc.innerHTML = `<p>Error with API.</p><p>${err}</p>`
-    } finally {
-        // console.log("Done.")
     }
 }
