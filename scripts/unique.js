@@ -126,26 +126,35 @@ async function getServants() {
     // searchButton.disabled = false
 }
 
-async function getPokemons() {
-    const maximumPokemon = 10
+async function getPokemons(maximumPokemon) {
     const apiUrl = `https://pokeapi.co/api/v2/pokemon?limit=${maximumPokemon}&offset=0`
-
-    const response = await fetch(apiUrl, {})
-    // if (response.status >= 200 && response.status < 300) {
-        data = await response.json()
-        const table = document.createElement("table")
+    const table = document.createElement("table")
         const thead = document.createElement("thead")
         const tbody = document.createElement("tbody")
         const thRow = document.createElement("tr")
-        const headers = ["Dex #", "Sprite", "Name", "Type 1", "Type 2", "HP", "Attack", "Defense", "Sp. Attack", "Sp. Defense", "Speed"]
+
+    const response = await fetch(apiUrl, {})
+    if (response.status >= 200 && response.status < 300) {
+        data = await response.json()
+        const headers = ["#", "Img", "Name", "Primary", "Secondary", "HP", "ATK", "DEF", "SPA", "SPD", "SPE"]
         headers.forEach(header => {
             const head = document.createElement("th")
             head.innerHTML = header
+            // head.setAttribute('class', 'col-sm')
             thRow.appendChild(head)
         })
 
         thead.appendChild(thRow)
         table.appendChild(thead)
+        table.setAttribute('id', 'pokeTable')
+        table.setAttribute('class', 'table align-middle display')
+        table.setAttribute('data-toggle', 'table')
+        table.setAttribute('data-search', 'true')
+        table.setAttribute('data-toolbar', 'sortInput')
+        table.setAttribute('data-pagination', 'true')
+        table.setAttribute('data-page-list', '[5, 10, 20, 50, 69, 100, 420, all]') //This does nothing and I am eternally Madge
+        thead.setAttribute('class' , 'h5')
+        // tbody.setAttribute('class', 'tbody')
         // console.log(data.results)
         data.results.forEach(item => {
             // console.log(item.name)
@@ -154,29 +163,41 @@ async function getPokemons() {
             }).then(pokeData => {
                 // console.log(pokeData)
                 const row = document.createElement("tr")
+                // row.setAttribute('class', 'row')
+                
                 const pdID = document.createElement("td")   //ID
                 pdID.innerHTML = pokeData.id
+                // pdID.setAttribute('class', 'col')
                 row.appendChild(pdID);
 
                 const pdImg = document.createElement("td")   //Image
                 const image = document.createElement("img")
                 image.src = `${pokeData.sprites.front_default}`
                 pdImg.appendChild(image)
+                // pdImg.setAttribute('class', 'col')
                 row.appendChild(pdImg);
 
                 const pdName = document.createElement("td")   //Name
-                pdName.innerHTML = pokeData.name
+                pdName.innerHTML = capitalizeFirstLetter(pokeData.name)
+                // pdName.setAttribute('class', 'col')
                 row.appendChild(pdName);
 
-                pokeData.types.forEach(type => {    //Type 1, Type 2
-                    const pdType = document.createElement("td")
-                    pdType.innerHTML = type.type.name
-                    row.appendChild(pdType)
-                })
+                // console.log(`${pokeData.types[0].type.name} and ${pokeData.types[1].type.name}`)
+
+                const pdType1 = document.createElement("td")
+                pdType1.innerHTML = capitalizeFirstLetter(pokeData.types[0].type.name)
+                // pdType1.setAttribute('class', 'col')
+                row.appendChild(pdType1)
+
+                const pdType2 = document.createElement("td")
+                pdType2.innerHTML = pokeData.types.length > 1 ? capitalizeFirstLetter(pokeData.types[1].type.name) : ""
+                // pdType2.setAttribute('class', 'col')
+                row.appendChild(pdType2)
 
                 pokeData.stats.forEach(stat => {    //HP, ATK, DEF, SPA, SPD, SPE
                     const pdStat = document.createElement("td")
                     pdStat.innerHTML = stat.base_stat
+                    // pdStat.setAttribute('class', 'col')
                     row.appendChild(pdStat)
                 })
                 tbody.appendChild(row)
@@ -185,22 +206,22 @@ async function getPokemons() {
             .catch(error => {console.log(error.message)})
         })
         table.appendChild(tbody)
-        tableLoc.innerHTML = ""
-        table.setAttribute('id', 'pokeTable')
-        table.setAttribute('class', 'table align-middle table-hover table-sm table-striped')
-        table.setAttribute('class', 'display')
-        table.setAttribute('data-toggle', 'table')
-        table.setAttribute('data-search', 'true')
-        table.setAttribute('data-toolbar', 'sortInput')
-        table.setAttribute('data-pagination', 'true')
-        table.setAttribute('data-page-list', '[10, 20, 50, 100, all]')
-        thead.setAttribute('class' , 'h5')
 
-        return table
-        // console.log(table)
-        // tableLoc.innerHTML = ""
-        // tableLoc.append(table)
+        // return table
+        console.log(table)
+
+        tableLoc.innerHTML = ""
         // if (tbody) { tableLoc.innerHTML = "<p>No Results.</p>" } 
         // else { tableLoc.append(table) }
-    // } else { tableLoc.innerHTML = "<p>No Results.</p>" }
+    } 
+    tableLoc.append(table)
+    // else { tableLoc.innerHTML = "<p>No Results.</p>" }
+}
+
+function toDataTable(table) {
+    const dtTable = new DataTable(table, {})
+    tableLoc.innerHTML = ""
+    console.log(dtTable)
+    tableLoc.append(dtTable)
+    // $("pokemonTable").dataTable();
 }
