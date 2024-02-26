@@ -136,7 +136,7 @@ async function getPokemons(maximumPokemon) {
     const response = await fetch(apiUrl, {})
     if (response.status >= 200 && response.status < 300) {
         data = await response.json()
-        const headers = ["#", "Img", "Name", "Primary", "Secondary", "HP", "ATK", "DEF", "SPA", "SPD", "SPE"]
+        const headers = ["#", "Img", "Name", "Primary", "Secondary", "HP", "ATK", "DEF", "SPA", "SPD", "SPE", "BST"]
         headers.forEach(header => {
             const head = document.createElement("th")
             head.innerHTML = header
@@ -194,13 +194,20 @@ async function getPokemons(maximumPokemon) {
                 // pdType2.setAttribute('class', 'col')
                 row.appendChild(pdType2)
 
+                bstSUM = 0
                 pokeData.stats.forEach(stat => {    //HP, ATK, DEF, SPA, SPD, SPE
                     const pdStat = document.createElement("td")
                     pdStat.innerHTML = stat.base_stat
+                    bstSUM += stat.base_stat
                     // pdStat.setAttribute('class', 'col')
                     row.appendChild(pdStat)
                 })
+                const pdBST = document.createElement("td")
+                pdBST.innerHTML = bstSUM
+                row.appendChild(pdBST)
+                
                 tbody.appendChild(row)
+
                 // console.log(row)
             })
             .catch(error => {console.log(error.message)})

@@ -55,7 +55,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         const tableName = "pokeTable"
-        maximumNumber = 10000
+        maximumNumber = 40
 
         if (maximumNumber > 1302) { maximumNumber = 1302 }
         console.log("Ready.")
@@ -76,12 +76,12 @@
                         document.getElementById('dtButton').innerText = `Populating Table. Please wait... ${document.getElementById(tableName).rows.length}/${maximumNumber}`
                         if (document.getElementById(tableName).rows.length > maximumNumber) {
                             // console.log(document.getElementById(tableName))
-                            // toDataTable(tableName);
+                            tableToDataTable(tableName);
                             document.getElementById('dtButton').setAttribute('class', 'btn')
                             document.getElementById('dtButton').setAttribute('onclick', `tableToDataTable(${tableName})`)
                             document.getElementById('dtButton').innerText = "Click Here to Clean the Page."
-                            document.getElementById('loading-fou-wrap').setAttribute('class', '')
-                            document.getElementById('loading-fou-content').setAttribute('class', '')
+                            document.getElementById('loading-fou-wrap').setAttribute('class', 'demo-wrap')
+                            document.getElementById('loading-fou-content').setAttribute('class', 'demo-content')
                             observer.disconnect()
                         }
                     }
@@ -92,8 +92,12 @@
         observer.observe(tableLoc, config);
     });
 
+    // $('demo-content').ready(function(){
+    //     console.log("HUH")
+    // })
+
     function tableToDataTable(table){
-        // console.log("FUCK")
+        console.log("Data Table Created")
         const dtTable = new DataTable(table, {});
         // console.log(dtTable)
         document.getElementById('dtButton').innerText = "This is a bad workaround"
