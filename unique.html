@@ -47,8 +47,9 @@
                     if (!(document.getElementById(tableName) instanceof $.fn.dataTable.Api)){
                         // console.log("YO")
                         observer.disconnect()
-                        tableToDataTable(tableName);
+                        // tableToDataTable(tableName);
                     }
+                    tableToDataTable(tableName);
                 }
             }
         });
@@ -56,26 +57,8 @@
     });
     function tableToDataTable(table){
         // console.log("FUCK")
-        const dtTable = new DataTable(document.getElementById(table), {
-            // initComplete: function () {
-            //     this.api().columns().every(function () {
-            //         let column = this;
-            //         // Create select element
-            //         let select = document.createElement('select');
-            //         select.add(new Option());
-            //         column.header().appendChildren(select);
-            //         // Apply listener for user change in value
-            //         select.addEventListener('change', function () {
-            //             column.search(select.value, {exact: true}).draw();
-            //         });
-            //         // Add list of options
-            //         column.data().unique().sort().each(function (d, j) {
-            //             select.add(new Option(d));
-            //         });
-            //     });
-            // },
-            // "bDestroy": true, // adding this kills the program idk why but I'm leaving it in anyways lmao
-        });         
+        const dtTable = new DataTable(getPokemons(), {});
+        console.log(dtTable)
     }
 
 </script>
