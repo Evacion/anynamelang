@@ -21,7 +21,8 @@ app.listen(port, () => {
 app.get("/", (req, res) => { return res.sendFile(__dirname + "/home.html") })
 app.get("/about", (req, res) => { return res.sendFile(__dirname + "/about.html") })
 app.get("/unique", (req, res) => { return res.sendFile(__dirname + "/unique.html") })
-app.get("/unique.js", (req, res) => { return res.sendFile(__dirname + "/unique.js") })
+// app.get("/unique.js", (req, res) => { return res.sendFile(__dirname + "/unique.js") })
+app.get("/navbar.html", (req, res) => { return res.sendFile(__dirname + "/navbar.html") })
 app.get("*", (req, res) => { return res.sendFile(__dirname + "/error.html") })
 
 // const server = http.createServer((req, res) => {

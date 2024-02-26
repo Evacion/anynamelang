@@ -129,3 +129,105 @@ async function getServants() {
     }
     // searchButton.disabled = false
 }
+
+async function getPokemon() {
+    const sortName = ""
+    const apiUrl = `pokemon?limit=100000&offset=0`
+
+    try {
+        const pokeCount = 0
+        const response = await fetch(apiUrl, {})
+        if (response.status >= 200 && response.status < 300) {
+            data = await response.json();
+            // console.log(data)
+
+            const table = document.createElement("table")
+            const thead = document.createElement("thead")
+            const tbody = document.createElement("tbody")
+            
+            const thRow = document.createElement("tr")
+
+            tableHeaders = ["Dex #", "Name", "Type 1", "Type 2", "HP", "Attack", "Defense", "Sp. Attack", "Sp. Defense", "Speed"]
+
+            tableHeaders.forEach(header, function(){
+                const head = document.createElement("th")
+                head.innerHTML = header
+                thRow.appendChild(head)
+            })
+            thead.appendChild(thRow)
+            table.appendChild(thead)
+            // table.appendChild(tfoot)
+            // tbody.setAttribute('class' , 'tbody-dark')
+
+            data.forEach(item => {
+                if (item.name.toLowerCase().includes(sortName)) {
+                    const row = document.createElement("tr")
+                    pokeCount += 1
+
+                    const col1 = document.createElement("td")
+                    const col2 = document.createElement("td")
+                    const col3 = document.createElement("td")
+                    const col4 = document.createElement("td")
+                    const col5 = document.createElement("td")
+                    const col6 = document.createElement("td")
+                    const col7 = document.createElement("td")
+                    const col8 = document.createElement("td")
+                    const col9 = document.createElement("td")
+                    const col10 = document.createElement("td")
+
+                    col1.innerHTML = pokeCount
+                    col2.innerHTML = item.name
+                    col3.innerHTML = item.name
+                    col4.innerHTML = "?"
+                    col5.innerHTML = "?"
+                    col6.innerHTML = item.name
+                    col7.innerHTML = item.name
+                    col8.innerHTML = "?"
+                    col9.innerHTML = "?"
+                    col10.innerHTML = item.name
+
+                    row.appendChild(col1);
+                    row.appendChild(col2);
+                    row.appendChild(col3);
+                    row.appendChild(col4);
+                    row.appendChild(col5);
+                    row.appendChild(col6);
+                    row.appendChild(col7);
+                    row.appendChild(col8);
+                    row.appendChild(col9);
+                    row.appendChild(col10);
+                    
+
+                    tbody.appendChild(row)
+                }
+            })
+            table.appendChild(tbody)
+            tableLoc.innerHTML = ""
+            
+            table.setAttribute('id', 'pokeTable')
+            table.setAttribute('class', 'table align-middle table-hover table-sm table-striped')
+            table.setAttribute('class', 'display')
+            table.setAttribute('data-toggle', 'table')
+            table.setAttribute('data-search', 'true')
+            table.setAttribute('data-toolbar', 'sortInput')
+            table.setAttribute('data-pagination', 'true')
+            table.setAttribute('data-page-list', '[10, 20, 50, 100, all]')
+            thead.setAttribute('class' , 'h5')
+
+            if (tbody.innerHTML == "") {
+                tableLoc.innerHTML = "<p>No Results.</p>"
+            } else {
+                // dtTable = new DataTable(table)
+                tableLoc.append(table)
+            }
+            // console.log(table)
+        } else {
+            tableLoc.innerHTML = "<p>No Results.</p>"
+        }
+    } catch (err) {
+        console.log(err)
+        tableLoc.innerHTML = `<p>Error with API.</p><p>${err}</p>`
+    } finally {
+        // console.log("Done.")
+    }
+}
