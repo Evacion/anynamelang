@@ -4,7 +4,11 @@ const sortInput = document.getElementById("sortInput")
 const tableLoc = document.getElementById("tableLoc");
 
 function test(e) { tableLoc.innerHTML = `Test Successful. ${e}` }
-function capitalizeFirstLetter(string) { return string.charAt(0).toUpperCase() + string.slice(1); }
+function capitalizeFirstLetter(string) { 
+    newString = ""
+    string.split("-").forEach(str => { newString += `${str.toString().charAt(0).toUpperCase() + str.toString().slice(1)} `; })
+    return newString.trim();
+}
 function getRarity(rarity) {
     switch(rarity) {
         case 1:
@@ -129,9 +133,9 @@ async function getServants() {
 async function getPokemons(maximumPokemon) {
     const apiUrl = `https://pokeapi.co/api/v2/pokemon?limit=${maximumPokemon}&offset=0`
     const table = document.createElement("table")
-        const thead = document.createElement("thead")
-        const tbody = document.createElement("tbody")
-        const thRow = document.createElement("tr")
+    const thead = document.createElement("thead")
+    const tbody = document.createElement("tbody")
+    const thRow = document.createElement("tr")
 
     const response = await fetch(apiUrl, {})
     if (response.status >= 200 && response.status < 300) {
@@ -147,12 +151,14 @@ async function getPokemons(maximumPokemon) {
         thead.appendChild(thRow)
         table.appendChild(thead)
         table.setAttribute('id', 'pokeTable')
-        table.setAttribute('class', 'table align-middle display')
+        table.setAttribute('class', 'table align-middle d-none table-responsive')
+        table.setAttribute('style', 'width: 100%;')
         table.setAttribute('data-toggle', 'table')
         table.setAttribute('data-search', 'true')
         table.setAttribute('data-toolbar', 'sortInput')
         table.setAttribute('data-pagination', 'true')
-        table.setAttribute('data-page-list', '[5, 10, 20, 50, 69, 100, 420, all]') //This does nothing and I am eternally Madge
+        // table.setAttribute('data-page-list', '[10, 20, 50, 100, all]') //This does nothing and I am eternally Madge
+
         thead.setAttribute('class' , 'h5')
         // tbody.setAttribute('class', 'tbody')
         // console.log(data.results)
@@ -182,16 +188,26 @@ async function getPokemons(maximumPokemon) {
                 // pdName.setAttribute('class', 'col')
                 row.appendChild(pdName);
 
-                // console.log(`${pokeData.types[0].type.name} and ${pokeData.types[1].type.name}`)
+                const pdType1 = document.createElement("td")    //Type 
+                const type1 = capitalizeFirstLetter(pokeData.types[0].type.name)
+                const typeImg1 = document.createElement("img")
 
-                const pdType1 = document.createElement("td")
-                pdType1.innerHTML = capitalizeFirstLetter(pokeData.types[0].type.name)
-                // pdType1.setAttribute('class', 'col')
+                pdType1.innerHTML = `<div>${type1}</div><br>`
+                typeImg1.src = `/assets/PokemonTypes/${type1}.svg`
+                typeImg1.setAttribute('style', 'height: 30px;')
+
+                pdType1.appendChild(typeImg1)
                 row.appendChild(pdType1)
 
-                const pdType2 = document.createElement("td")
-                pdType2.innerHTML = pokeData.types.length > 1 ? capitalizeFirstLetter(pokeData.types[1].type.name) : ""
-                // pdType2.setAttribute('class', 'col')
+                const pdType2 = document.createElement("td")    //Type 2
+                const type2 = pokeData.types.length > 1 ? capitalizeFirstLetter(pokeData.types[1].type.name) : ``
+                const typeImg2 = document.createElement("img")
+
+                pdType2.innerHTML = pokeData.types.length > 1 ? `<div>${type2}</div><br>` : ``
+                typeImg2.src = type2.length > 0 ? `/assets/PokemonTypes/${type2}.svg` : ``
+                typeImg2.setAttribute('style', 'height: 30px;')
+                
+                pdType2.appendChild(typeImg2)
                 row.appendChild(pdType2)
 
                 bstSUM = 0
@@ -199,7 +215,6 @@ async function getPokemons(maximumPokemon) {
                     const pdStat = document.createElement("td")
                     pdStat.innerHTML = stat.base_stat
                     bstSUM += stat.base_stat
-                    // pdStat.setAttribute('class', 'col')
                     row.appendChild(pdStat)
                 })
                 const pdBST = document.createElement("td")
@@ -207,22 +222,13 @@ async function getPokemons(maximumPokemon) {
                 row.appendChild(pdBST)
                 
                 tbody.appendChild(row)
-
-                // console.log(row)
             })
             .catch(error => {console.log(error.message)})
         })
         table.appendChild(tbody)
-
-        // return table
-        console.log(table)
-
         tableLoc.innerHTML = ""
-        // if (tbody) { tableLoc.innerHTML = "<p>No Results.</p>" } 
-        // else { tableLoc.append(table) }
     } 
     tableLoc.append(table)
-    // else { tableLoc.innerHTML = "<p>No Results.</p>" }
 }
 
 function toDataTable(table) {
