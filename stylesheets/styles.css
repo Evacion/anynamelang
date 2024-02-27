@@ -51,3 +51,8 @@
 table tr td {
     background-color: rgba(0, 0, 0, 0.1) !important;
 }
+
+.carousel-control-next,
+.carousel-control-prev /*, .carousel-indicators */ {
+    filter: invert(100%);
+}
