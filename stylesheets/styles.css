@@ -56,3 +56,8 @@ table tr td {
 .carousel-control-prev /*, .carousel-indicators */ {
     filter: invert(100%);
 }
+
+/* .card-img {
+    width: 100%;
+    object-fit: contain;
+} */
