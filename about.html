@@ -31,9 +31,13 @@
                     </button>
                 </div>
             </div>
+            <div class="d-flex justify-content-center">
+                <small>Therere's not much else about me, unfortunately</small>
+            </div>
         </div>
     </body>
     <script type="text/javascript">
+        function toClipBoard(text) { navigator.clipboard.writeText(text); }
         $(document).ready(function(){
             const carouselData = {
                 0: {
@@ -175,13 +179,8 @@
                     linkButton.setAttribute('type', 'button')
                     linkButton.setAttribute('target', '_blank')
 
-                    if (current[1].icons != 'bi-clipboard') {
-                        linkButton.setAttribute('onclick', `window.open('${current[1].link}','_blank')`)
-                    } else {
-                        linkButton.setAttribute('onclick', `toClipBoard('${current[1].link}')`)
-                    }
-
-                    
+                    if (current[1].icons != 'bi-clipboard') { linkButton.setAttribute('onclick', `window.open('${current[1].link}','_blank')`) } 
+                    else { linkButton.setAttribute('onclick', `toClipBoard('${current[1].link}')`) }
                     const icon = document.createElement('i')
                     const iconDiv = document.createElement('div')
                     icon.setAttribute('class', `bi ${current[1].icons}`)
@@ -210,12 +209,8 @@
 
                 carouselContents.appendChild(carouselItem)
             })
-            console.log("HOEH???")
-            console.log(carousel)
+            // console.log("HOEH???")
+            // console.log(carousel)
         });
-
-        function toClipBoard(text) {
-            navigator.clipboard.writeText(text);
-        }
     </script>
 </html>
