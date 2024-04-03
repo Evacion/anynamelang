@@ -1,9 +1,31 @@
+// const { nanoid } = require("nanoid")
+// import cryptoRandomString from "crypto-random-string"
 
+// const cryptoRandomString = require ("crypto-random-string")
 const express = require("express")
 const app = express()
 const port = 8000
 const http = require('http')
 const fs = require('fs')
+
+const { servants, hello } = require("./mymodule")
+
+// const rng = seedrandom(seed)
+// const nanoid = customRandom('abcdef', 10, size => {
+//     return (new Uint8Array(size)).map(() => 256 * rng())
+// })
+
+const weather = require('weather-js')
+weather.find({search: 'Davao, Philippines', degreeType: 'C'}, function (err, result) {
+    if(err){ console.log(err)}
+    else {
+        let data = { weatherdavao: eval(JSON.stringify(result, null, 2))}
+        // res.render('SOMETHING', data)
+    }
+})
+// console.log(randomString)
+// Le Philippines: https://cdn-icons-png.flaticon.com/512/197/197561.png
+
 // app.engine('html', require('ejs').renderFile)
 // app.set('view engine', 'html')
 
@@ -14,10 +36,10 @@ app.listen(port, () => {
 })
 
 app.use((req, res, next) => {
-    console.log("\nRequest Made")
-    console.log(`Host: ${req.hostname}`)
-    console.log(`Path: ${req.path}`)
-    console.log(`Method: ${req.method}`)
+    // console.log("\nRequest Made")
+    // console.log(`Host: ${req.hostname}`)
+    // console.log(`Path: ${req.path}`)
+    // console.log(`Method: ${req.method}`)
     next()
 })
 
@@ -29,8 +51,7 @@ app.get("/home", (req, res) => {
     return res.redirect('/') 
 })
 app.get("/about", (req, res) => { 
-    res.render('about.ejs')
-    // return res.sendFile(__dirname + "/about.html") 
+    res.render('about.ejs', {servantData: servants, helloFunction: hello})
 })
 app.get("/aboutus", (req, res) => { 
     return res.redirect('/about') 
@@ -47,6 +68,10 @@ app.get("/navbar.html", (req, res) => {
     res.render('navbar.ejs')
     // return res.sendFile(__dirname + "/navbar.html") 
 })
+app.get("/error", (req, res) => {  // THIS SCREWS WITH THE NAVBAR FOR SOME REASON
+    res.render('error.ejs')
+    // return res.sendFile(__dirname + "/navbar.html") 
+})
 
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
@@ -57,31 +82,3 @@ app.use('/stylesheets', express.static(__dirname + '/stylesheets/'));
 app.use(express.static('public'));
 app.use((req, res) => { return res.status(404).sendFile(__dirname + '/error.html') })
 
-
-
-// const server = http.createServer((req, res) => {
-//     console.log(req.url)
-//     res.setHeader("Content-Type", "text/html")
-    
-//     let myurl = ""
-//     if (req.url == "/") { 
-//         myurl += 'index.html' 
-//     } else if (req.url == "/about") { 
-//         myurl += 'about.html' 
-//     } else if (req.url == "/unique") { 
-//         myurl += 'unique.html' 
-//     } else { 
-//         myurl += 'error.html' 
-//     }
-
-//     fs.readFile(myurl, (err, data) => {
-//         if (err) { console.log(err) } else {
-//             res.write(data)
-//             res.end()
-//         }
-//     })
-// })
-
-// server.listen(8000, 'localhost', () => {
-//     console.log("[NAVI]: Hey, Listen.")    
-// })

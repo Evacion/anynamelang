@@ -15,6 +15,7 @@
     "@mui/material": "^5.15.10",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "crypto-random-string": "^5.0.0",
     "datatables.net-bs5": "^2.0.0",
     "datatables.net-dt": "^2.0.0",
     "datatables.net-fixedheader-bs5": "^4.0.0",
@@ -22,8 +23,10 @@
     "datatables.net-scroller-bs5": "^2.4.0",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "nanoid": "^5.0.6",
     "nodemon": "^3.0.3",
     "pace": "^0.0.4",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "weather-js": "^2.0.0"
   }
 }
