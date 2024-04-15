@@ -5,13 +5,14 @@
         <%- include("../partials/head.ejs") %>
     </head>
     <body>
-        <% console.log(servantData) %>
         <div id="navbarLocation"></div>
         <div class="demo-wrap"></div>
         <div class="demo-content">
             <div id="carouselContainer">
                 <div id="aboutCarousel" class="carousel slide cross-fade w-100 " data-bs-ride="true">
-                    <div id="carousel-indicators" class="carousel-indicators"><!--The contents are generated via Javascript--></div>
+                    <div id="carousel-indicators" class="carousel-indicators">
+                        <!--The contents are generated via Javascript-->
+                    </div>
                     <div id="carousel-inner" class="carousel-inner"><!--The contents are generated via Javascript--></div>
                     <button class="carousel-control-prev" href="#aboutCarousel" role="button" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -23,7 +24,7 @@
                     </button>
                 </div>
             </div>
-            <div class="container center">
+            <div class="container center" hidden>
                 <% for (let i=0; i<servantData.length;i++){ %>
                     <div class="row row-cols-3">
                         <div class="col text-center"><%= servantData[i].className %></div>
@@ -33,106 +34,17 @@
                 <% } %>
             </div>
         </div>
+        <div id="hiddenData" hidden><%=JSON.stringify(carouselData)%></div>
+        <footer><center>Created By Amogus</center></footer>
     </body>
-    <script type="text/javascript">
+    <script>
         function toClipBoard(text) { navigator.clipboard.writeText(text); }
         $(document).ready(function(){
-            const carouselData = {
-                0: {
-                    'title': 'Github Accounts',
-                    'links': {
-                        0: {
-                            'name': 'Primary',
-                            'link': 'https://github.com/EvacionSaraak',
-                            'icons': 'bi-box-arrow-up-right',
-                        },
-                        1: {
-                            'name': 'Secondary',
-                            'link': 'https://github.com/Evacion',
-                            'icons': 'bi-box-arrow-up-right',
-                        },
-                    },
-                    'body' : 'Contains information pertaining to Github Activities and Contributions.',
-                    'img': 'https://avatars.githubusercontent.com/u/54382521?v=4',
-                },
-                1: {
-                    'title': 'LinkedIn Account',
-                    'links': {
-                        0: {
-                            'name': 'LinkedIn',
-                            'link': 'https://www.linkedin.com/in/ray-james-amer-gonzales-3a6215136/',
-                            'icons': 'bi-box-arrow-up-right',
-                        },
-                    },
-                    'body' : 'Here is a look into my work history, albeit somewhat limited in scope.',
-                    'img': 'https://media.licdn.com/dms/image/C5603AQGM0w67eOwpug/profile-displayphoto-shrink_800_800/0/1661020223486?e=1714608000&v=beta&t=XdIMZDqSCUH_E0zvswXtoY4LiLuPe6qRHZxiyoMNqjw',
-                },
-                2: {
-                    'title': 'Business Email',
-                    'links': {
-                        0: {
-                            'name': 'Email',
-                            'link': 'rayjamesg2000@gmail.com',
-                            'icons': 'bi-clipboard',
-                        },
-                    },
-                    'body' : 'My contact email for all professional inquiries and future transactions',
-                    'img': 'https://lh3.googleusercontent.com/a/ACg8ocJkQjIvwuT56KdTrYCcnTQb6jz7HVcF700KlSfDN5xzeQ=s288-c-no',
-                },
-                3: {
-                    'title': 'Discord',
-                    'links': {
-                        0: {
-                            'name': 'Discord',
-                            'link': 'EvacionSaraak#8823',
-                            'icons': 'bi-clipboard',
-                        },
-                    },
-                    'body' : 'If you cannot reach me via LinkedIn or Email, then Discord is always a viable option.',
-                    'img': 'https://cdn.discordapp.com/avatars/377759061812183040/18a5b0fc5c2c0201287414830326afe2.webp?size=128',
-                },
-                4: {
-                    'title': 'Yugioh?',
-                    'links': {
-                        0: {
-                            'name': 'Top 16',
-                            'link': 'https://media.discordapp.net/attachments/1140352616736489634/1140359549472215151/LCS_Week_11_Top_16.png?ex=65ee0397&is=65db8e97&hm=e48e06ccd666ed731d73779e1bed82484b528253b6a8f7110749e5e97e55fb0d&=&format=webp&quality=lossless&width=630&height=472',
-                            'icons': 'bi-box-arrow-up-right',
-                        },
-                    },
-                    'body' : `Ran out of things to put, so here's an image of when I made top 16 in a tournament using World Chalice.`,
-                    'img': 'https://media.discordapp.net/attachments/1140352616736489634/1140359549472215151/LCS_Week_11_Top_16.png?ex=65ee0397&is=65db8e97&hm=e48e06ccd666ed731d73779e1bed82484b528253b6a8f7110749e5e97e55fb0d&=&format=webp&quality=lossless&width=630&height=472',
-                },
-                5: {
-                    'title': 'Yugioh Again?',
-                    'links': {
-                        0: {
-                            'name': 'Tops 8',
-                            'link': 'https://media.discordapp.net/attachments/1140352616736489634/1188229065317036082/LCS_Week_16_Top_16.png?ex=65ecd20d&is=65da5d0d&hm=2abd12b49ffc94d51997ad8f9cef11e4205171ef7d7e51cdb766dade26b667cf&=&format=webp&quality=lossless&width=466&height=350',
-                            'icons': 'bi-box-arrow-up-right',
-                        },
-                    },
-                    'body' : `And uh... I guess here's another Top I got, using Penguins, after trying for several events.`,
-                    'img': 'https://media.discordapp.net/attachments/1140352616736489634/1188229065317036082/LCS_Week_16_Top_16.png?ex=65ecd20d&is=65da5d0d&hm=2abd12b49ffc94d51997ad8f9cef11e4205171ef7d7e51cdb766dade26b667cf&=&format=webp&quality=lossless&width=466&height=350',
-                },
-                6: {
-                    'title': 'Yugioh a Third Time!',
-                    'links': {
-                        0: {
-                            'name': 'Top 16',
-                            'link': 'https://media.discordapp.net/attachments/1140352616736489634/1195820900965163199/LCS_Week_17_Top_16.png?ex=65ecc100&is=65da4c00&hm=eda24566fa3b1efe3684e50d784d56824cc844cf2a068c638145ab213a126275&=&format=webp&quality=lossless&width=630&height=472',
-                            'icons': 'bi-box-arrow-up-right',
-                        },
-                    },
-                    'body' : `And Another One. Because Yeah I Like Yugioh. This one directly after the previous one, using Pend Counter Fairies`,
-                    'img': 'https://media.discordapp.net/attachments/1140352616736489634/1195820900965163199/LCS_Week_17_Top_16.png?ex=65ecc100&is=65da4c00&hm=eda24566fa3b1efe3684e50d784d56824cc844cf2a068c638145ab213a126275&=&format=webp&quality=lossless&width=630&height=472',
-                },
-                
-            }
+            const carouselData = JSON.parse(document.getElementById("hiddenData").innerText)
             const carousel = document.getElementById('aboutCarousel')
             const carouselIndicators = document.getElementById('carousel-indicators')
             const carouselContents = document.getElementById('carousel-inner')
-
+            console.log(carouselData)
             Object.entries(carouselData).forEach((data) =>{
                 console.log(data[0])
                 const carouselItem = document.createElement('div')

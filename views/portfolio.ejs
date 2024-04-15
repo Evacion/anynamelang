@@ -23,48 +23,13 @@
                 </div>
             </div>
         </div>
+        <div id="hiddenData" hidden><%=JSON.stringify(carouselData)%></div>
+        <footer><center>Created By Amogus</center></footer>
     </body>
     
     <script type="text/javascript">
         $(document).ready(function(){
-            const carouselData = {
-                0: {
-                    'title': 'Game Dev Projects',
-                    'links': {
-                        0: {
-                            'name': 'Google Drive Link',
-                            'link': 'https://drive.google.com/drive/folders/1T-IrNP1YWW_PCWvIdMJDVKOAGj0iaIBb?usp=drive_link',
-                            'icons': 'bi-box-arrow-up-right',
-                        },
-                    },
-                    'body' : `Here are a couple of projects I've worked on as assignments for Game Development.`,
-                    'img': `/assets/unity_logo.png`,
-                },
-                1: {
-                    'title': 'Flutter Projects',
-                    'links': {
-                        0: {
-                            'name': 'Functional Flutter Application',
-                            'link': 'https://github.com/EvacionSaraak/ITElective5Exam',
-                            'icons': 'bi-box-arrow-up-right',
-                        },
-                    },
-                    'body' : `It was a bit of a struggle to create this file, but as a result, I'm immensely familiar with Flutter as a tool.`,
-                    'img': `https://web-strapi.mrmilu.com/uploads/flutter_logo_470e9f7491.png`,
-                },
-                2: {
-                    'title': 'My Magnum Opus',
-                    'links': {
-                        0: {
-                            'name': 'My Finest Work',
-                            'link': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                            'icons': 'bi-box-arrow-up-right',
-                        },
-                    },
-                    'body' : `I've spent a long time on this portfolio`,
-                    'img': `./assets/chaldea_logo.png`,
-                },
-            }
+            const carouselData = JSON.parse(document.getElementById("hiddenData").innerText)
             const carousel = document.getElementById('aboutCarousel')
             const carouselIndicators = document.getElementById('carousel-indicators')
             const carouselContents = document.getElementById('carousel-inner')

@@ -9,6 +9,7 @@ const http = require('http')
 const fs = require('fs')
 
 const { servants, hello } = require("./mymodule")
+const { aboutData, portfolioData } = require("./data.js")
 
 // const rng = seedrandom(seed)
 // const nanoid = customRandom('abcdef', 10, size => {
@@ -16,13 +17,6 @@ const { servants, hello } = require("./mymodule")
 // })
 
 const weather = require('weather-js')
-weather.find({search: 'Davao, Philippines', degreeType: 'C'}, function (err, result) {
-    if(err){ console.log(err)}
-    else {
-        let data = { weatherdavao: eval(JSON.stringify(result, null, 2))}
-        // res.render('SOMETHING', data)
-    }
-})
 // console.log(randomString)
 // Le Philippines: https://cdn-icons-png.flaticon.com/512/197/197561.png
 
@@ -51,7 +45,7 @@ app.get("/home", (req, res) => {
     return res.redirect('/') 
 })
 app.get("/about", (req, res) => { 
-    res.render('about.ejs', {servantData: servants, helloFunction: hello})
+    res.render('about.ejs', {servantData: servants, helloFunction: hello, carouselData: aboutData})
 })
 app.get("/aboutus", (req, res) => { 
     return res.redirect('/about') 
@@ -61,15 +55,43 @@ app.get("/unique", (req, res) => {
     // return res.sendFile(__dirname + "/unique.html") 
 })
 app.get("/portfolio", (req, res) => { 
-    res.render('portfolio.ejs')
+    res.render('portfolio.ejs', {carouselData: portfolioData})
+    // return res.sendFile(__dirname + "/portfolio.html") 
+})
+app.get("/weather", (req, res) => {
+    weather.find({search: 'Tokyo', degreeType: 'C'}, function (err, result) {
+        if (err){console.log(err)}
+        else {
+            weatherJP = {data: eval(JSON.stringify(result, null, 2))}
+            // console.log(weatherJP)
+            weather.find({search: 'Davao, Philippines', degreeType: 'C'}, function (err, result) {
+                if (err){console.log(err)}
+                else {
+                    weatherPH = {data: eval(JSON.stringify(result, null, 2))}
+                    // console.log(weatherPH)
+                    weather.find({search: 'Dubai', degreeType: 'C'}, function (err, result) {
+                        if (err){console.log(err)}
+                        else {
+                            weatherUAE = {data: eval(JSON.stringify(result, null, 2))}
+                            weatherData = {
+                                0: weatherJP, 
+                                1: weatherPH, 
+                                2: weatherUAE,
+                            }
+                            console.log(`WEATHER DATA HERE BOZO   ${weatherData}`)
+                            res.render('weather.ejs', {
+                                weatherData: weatherData
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    })
     // return res.sendFile(__dirname + "/portfolio.html") 
 })
 app.get("/navbar.html", (req, res) => { 
     res.render('navbar.ejs')
-    // return res.sendFile(__dirname + "/navbar.html") 
-})
-app.get("/error", (req, res) => {  // THIS SCREWS WITH THE NAVBAR FOR SOME REASON
-    res.render('error.ejs')
     // return res.sendFile(__dirname + "/navbar.html") 
 })
 
@@ -80,5 +102,7 @@ app.use('/assets', express.static(__dirname + '/assets/'));
 app.use('/scripts', express.static(__dirname + '/scripts/'));
 app.use('/stylesheets', express.static(__dirname + '/stylesheets/'));
 app.use(express.static('public'));
-app.use((req, res) => { return res.status(404).sendFile(__dirname + '/error.html') })
+app.use((req, res) => { 
+    res.status(404).render('error.ejs') 
+})
 

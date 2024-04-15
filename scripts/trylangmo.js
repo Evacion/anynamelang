@@ -19,14 +19,6 @@ console.log(convertTime(c))
 console.log(convertTime(d))
 console.log(convertTime(e))
 
-
-
-
-
-
-
-
-
     // console.log(timeIndicator)
     // if (parseInt(timeData[0]) != 12) {
     //     if(timeIndicator == 'P'){

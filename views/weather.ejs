@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+    <head>
+        <title>My Portfolio</title>
+        <%- include("../partials/head.ejs") %>
+    </head>
+    <body>
+        <div id="navbarLocation"></div>
+        <% console.log("REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE") %>
+        <% console.log(weatherData.length) %>
+        <div>SECONDARY NAVBAR HERE THAT POPULATES BASED ON weatherData[0].data.length</div>
+        <div class="demo-wrap">
+            <div class="table"></div>
+            <% for(var x=0; weatherData[0].data.length > x; x++) { %>
+                <h4><%= weatherData[x].data[0].location.name %></h4>
+                <p class="latlong">
+                    <%= weatherData[x].data[0].location.lat %> lat, 
+                    <%= weatherData[x].data[0].location.long %> long </p>
+            
+            <% } %>
+        </div>
+        <footer><center>Created By Amogus</center></footer>
+    </body>
+</html>
