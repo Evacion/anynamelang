@@ -6,19 +6,55 @@
     </head>
     <body>
         <div id="navbarLocation"></div>
-        <% console.log("REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE") %>
-        <% console.log(weatherData.length) %>
-        <div>SECONDARY NAVBAR HERE THAT POPULATES BASED ON weatherData[0].data.length MIN REQ 5 Weathers</div>
+        <!-- <div>SECONDARY NAVBAR HERE THAT POPULATES BASED ON weatherData[0].data.length MIN REQ 5 Weathers</div> -->
         <div class="demo-wrap">
-            <div class="table"></div>
-            <% for(var x=0; weatherData[0].data.length > x; x++) { %>
-                <h4><%= weatherData[x].data[0].location.name %></h4>
-                <p class="latlong">
-                    <%= weatherData[x].data[0].location.lat %> lat, 
-                    <%= weatherData[x].data[0].location.long %> long </p>
-            
-            <% } %>
+            <center>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <% for(var x=0; searchTerms.length > x; x++) { %>
+                        <button type="button" 
+                                class="btn btn-secondary changeIndexButton"
+                                data-index="<%= x %>"
+                                <% if(x == dataIndex){ %> disabled <% } %>>
+                            <%= searchTerms[x] %>
+                        </button>
+                    <% } %>
+                </div>
+            </center>
+            <table class="table table-dark table-striped">
+                <thead>
+                    <th scope="col">Image</th>
+                    <th scope="col">Location Name</th>
+                    <th scope="col">Long Lat</th>
+                    <th scope="col">Temperature Celsius</th>
+                    <th scope="col">Skytext</th>
+                    <th scope="col">Date</th>
+                </thead>
+                <tbody>
+                    <% for(var x=0; weatherData[0].length > x; x++) { %>
+                        <tr>
+                            <td> test </td>
+                            <td> <%= weatherData[0].data[0].location.name %> </td>
+                            <td> <%= weatherData[0].data[0].location.long %>, <%= weatherData[dataIndex].data[x].location.lat %> </td>
+                            <td> <%= weatherData[0].data[0].current.temperature %> </td>
+                            <td> <%= weatherData[0].data[0].current.skytext %> </td>
+                            <td> <%= weatherData[0].data[0].current.date %> </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </div>
         </div>
         <footer><center>Created By Amogus</center></footer>
     </body>
 </html>
+<script>
+    function handleButtonClick(event) {
+        var index = event.target.getAttribute('data-index');
+        var searchTerm = event.target.innerText
+        // Reload the page with the new index as a query parameter
+        window.location.href = `/weather?dataIndex=${index}&searchTerm=${searchTerm}`;
+    }
+    var buttons = document.querySelectorAll('.changeIndexButton');
+    buttons.forEach(function(button) {
+        button.addEventListener('click', handleButtonClick);
+    });
+</script>

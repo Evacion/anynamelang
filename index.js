@@ -1,7 +1,3 @@
-// const { nanoid } = require("nanoid")
-// import cryptoRandomString from "crypto-random-string"
-
-// const cryptoRandomString = require ("crypto-random-string")
 const express = require("express")
 const app = express()
 const port = 8000
@@ -10,18 +6,7 @@ const fs = require('fs')
 
 const { servants, hello } = require("./mymodule")
 const { aboutData, portfolioData } = require("./data.js")
-
-// const rng = seedrandom(seed)
-// const nanoid = customRandom('abcdef', 10, size => {
-//     return (new Uint8Array(size)).map(() => 256 * rng())
-// })
-
 const weather = require('weather-js')
-// console.log(randomString)
-// Le Philippines: https://cdn-icons-png.flaticon.com/512/197/197561.png
-
-// app.engine('html', require('ejs').renderFile)
-// app.set('view engine', 'html')
 
 app.listen(port, () => { 
     console.log(`Server Connected`)
@@ -58,39 +43,42 @@ app.get("/portfolio", (req, res) => {
     res.render('portfolio.ejs', {carouselData: portfolioData})
     // return res.sendFile(__dirname + "/portfolio.html") 
 })
-app.get("/weather", (req, res) => {
-    weather.find({search: 'Tokyo', degreeType: 'C'}, function (err, result) {
-        if (err){console.log(err)}
+
+function weatherFindRecursive(res, arr, prevResult, dataIndex) {
+    weather.find({search: arr[0], degreeType: 'C'}, function (err, result) {
+        if (err) { console.log(`THIS IS THE ERROR BOZO: ${err}`) }
         else {
-            weatherJP = {data: eval(JSON.stringify(result, null, 2))}
-            // console.log(weatherJP)
-            weather.find({search: 'Davao, Philippines', degreeType: 'C'}, function (err, result) {
-                if (err){console.log(err)}
-                else {
-                    weatherPH = {data: eval(JSON.stringify(result, null, 2))}
-                    // console.log(weatherPH)
-                    weather.find({search: 'Dubai', degreeType: 'C'}, function (err, result) {
-                        if (err){console.log(err)}
-                        else {
-                            weatherUAE = {data: eval(JSON.stringify(result, null, 2))}
-                            weatherData = {
-                                0: weatherJP, 
-                                1: weatherPH, 
-                                2: weatherUAE,
-                            }
-                            console.log(`WEATHER DATA HERE BOZO   ${weatherData}`)
-                            res.render('weather.ejs', {
-                                weatherData: weatherData
-                            })
-                        }
-                    })
-                }
-            })
+            result = [{ data: eval(JSON.stringify(result, null, 2)) }]
+            mergedResults = prevResult.concat(result) 
+            arr.shift()
+            if (arr.length > 0) { weatherFindRecursive(res, arr, mergedResults, dataIndex) } 
+            else { 
+                res.render('weather.ejs', { weatherData: mergedResults, dataIndex: dataIndex}) 
+            }
         }
     })
-    // return res.sendFile(__dirname + "/portfolio.html") 
+}
+
+function weatherFind(res, searchString, dataIndex, searchTerms) {
+    weather.find({search: searchString, degreeType: 'C'}, function (err, result) {
+        if (err) { console.log(`THIS IS THE ERROR BOZO: ${err}`) }
+        else {
+            result = [{ data: eval(JSON.stringify(result, null, 2)) }]
+            console.log(`WHYYYYYYYYYYYYYYYYYYY =====> ${result[0].data[0].location.name}`)
+            res.render('weather.ejs', { weatherData: result, dataIndex: dataIndex, searchTerms: searchTerms})
+        }
+    })
+}
+
+app.get("/weather", (req, res) => {
+    const searchTerms = ["Japan", "Philippines", "UAE", "Korea", "Britain"]
+    console.log("\nREFRESHED WEATHER PAGE LETSGOOOO")
+
+    const dataIndex = req.query.dataIndex || 0;
+    const searchTerm = req.query.searchTerm || searchTerms[0]
+    weatherFind(res, searchTerm, dataIndex, searchTerms);
 })
-app.get("/navbar.html", (req, res) => { 
+app.get("/navbar", (req, res) => { 
     res.render('navbar.ejs')
     // return res.sendFile(__dirname + "/navbar.html") 
 })
@@ -99,6 +87,7 @@ app.get("/navbar.html", (req, res) => {
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/css', express.static(__dirname + '/node_modules/datatables.net-bs5/css'));
 app.use('/assets', express.static(__dirname + '/assets/'));
+app.use('/partials', express.static(__dirname + '/partials/'));
 app.use('/scripts', express.static(__dirname + '/scripts/'));
 app.use('/stylesheets', express.static(__dirname + '/stylesheets/'));
 app.use(express.static('public'));
