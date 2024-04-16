@@ -61,23 +61,14 @@ function weatherFindRecursive(res, arr, prevResult, dataIndex) {
 
 function weatherFind(res, searchString, dataIndex, searchTerms) {
     weather.find({search: searchString, degreeType: 'C'}, function (err, result) {
-        if (err) { console.log(`THIS IS THE ERROR BOZO: ${err}`) }
-        else {
-            result = [{ data: eval(JSON.stringify(result, null, 2)) }]
-            console.log(`WHYYYYYYYYYYYYYYYYYYY =====> ${result[0].data[0].location.name}`)
-            res.render('weather.ejs', { weatherData: result[0].data, dataIndex: dataIndex, searchTerms: searchTerms})
-        }
+        if (err) {  console.log(`THIS IS THE ERROR BOZO: ${err}`); return; }
+        res.render('weather.ejs', { weatherData: eval(JSON.stringify(result, null, 2)), dataIndex: dataIndex, searchTerms: searchTerms})
     })
 }
 
 app.get("/weather", (req, res) => {
-    const searchTerms = ["Tokyo", "Davao", "Dubai", "Brazil", "Baghdad", "Somalia", "Orleans", "Rome", "Hot Singles"]
-    console.log("\nREFRESHED WEATHER PAGE LETSGOOOO")
-    searchTerms.sort()
-
-    const dataIndex = req.query.dataIndex || 0;
-    const searchTerm = req.query.searchTerm || searchTerms[0]
-    weatherFind(res, searchTerm, dataIndex, searchTerms);
+    const searchTerms = ["Tokyo", "Davao", "Dubai", "Brazil", "Baghdad", "Somalia", "Orleans", "Rome", "Hot Singles"].sort()
+    weatherFind(res, req.query.searchTerm || searchTerms[0], req.query.dataIndex || 0, searchTerms);
 })
 app.get("/navbar", (req, res) => { 
     res.render('navbar.ejs')

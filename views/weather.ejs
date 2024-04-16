@@ -6,7 +6,6 @@
     </head>
     <body>
         <div id="navbarLocation"></div>
-        <!-- <div>SECONDARY NAVBAR HERE THAT POPULATES BASED ON weatherData[0].data.length MIN REQ 5 Weathers</div> -->
         <div class="demo-wrap">
             <center>
                 <div class="btn-group" role="group" aria-label="Basic example">
@@ -33,7 +32,6 @@
                     <th>Forecast 3</th>
                 </thead>
                 <tbody>
-                    <% console.log(weatherData) %>
                     <% weatherData.forEach(entry => { %>
                       <tr>
                         <td><%= entry.location.name %></td>
@@ -57,14 +55,7 @@
     </body>
 </html>
 <script>
-    function handleButtonClick(event) {
-        var index = event.target.getAttribute('data-index');
-        var searchTerm = event.target.innerText
-        // Reload the page with the new index as a query parameter
-        window.location.href = `/weather?dataIndex=${index}&searchTerm=${searchTerm}`;
-    }
+    function handleButtonClick(event) { window.location.href = `/weather?dataIndex=${event.target.getAttribute('data-index')}&searchTerm=${event.target.innerText}`; }
     var buttons = document.querySelectorAll('.changeIndexButton');
-    buttons.forEach(function(button) {
-        button.addEventListener('click', handleButtonClick);
-    });
+    buttons.forEach(function(button) { button.addEventListener('click', handleButtonClick); });
 </script>
