@@ -71,7 +71,7 @@ function weatherFind(res, searchString, dataIndex, searchTerms) {
 }
 
 app.get("/weather", (req, res) => {
-    const searchTerms = ["Tokyo", "Davao", "Dubai", "Brazil", "Baghdad", "Somalia"]
+    const searchTerms = ["Tokyo", "Davao", "Dubai", "Brazil", "Baghdad", "Somalia", "Orleans", "Rome", "Hot Singles"]
     console.log("\nREFRESHED WEATHER PAGE LETSGOOOO")
     searchTerms.sort()
 

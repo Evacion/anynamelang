@@ -28,9 +28,9 @@
                     <th>Day</th>
                     <th>Low</th>
                     <th>High</th>
-                    <th>Precip</th>
-                    <th>Humidity</th>
-                    <th>Forecast</th>
+                    <th>Forecast 1</th>
+                    <th>Forecast 2</th>
+                    <th>Forecast 3</th>
                 </thead>
                 <tbody>
                     <% console.log(weatherData) %>
@@ -43,11 +43,11 @@
                             <img src="<%= entry.current.imageUrl %>" alt="Weather GIF">
                         </td>
                         <td><%= entry.current.day %></td>
-                        <td><%= entry.forecast[0].low %></td>
-                        <td><%= entry.forecast[0].high %></td>
-                        <td><%= entry.forecast[0].precip %></td>
-                        <td><%= entry.current.humidity %></td>
+                        <td><%= entry.forecast[0].low %>°C</td>
+                        <td><%= entry.forecast[0].high %>°C</td>
                         <td><%= entry.forecast[1].date %><br><%= entry.forecast[1].skytextday %></td>
+                        <td><%= entry.forecast[2].date %><br><%= entry.forecast[2].skytextday %></td>
+                        <td><%= entry.forecast[3].date %><br><%= entry.forecast[3].skytextday %></td>
                       </tr>
                     <% }); %>
                 </tbody>
