@@ -65,14 +65,15 @@ function weatherFind(res, searchString, dataIndex, searchTerms) {
         else {
             result = [{ data: eval(JSON.stringify(result, null, 2)) }]
             console.log(`WHYYYYYYYYYYYYYYYYYYY =====> ${result[0].data[0].location.name}`)
-            res.render('weather.ejs', { weatherData: result, dataIndex: dataIndex, searchTerms: searchTerms})
+            res.render('weather.ejs', { weatherData: result[0].data, dataIndex: dataIndex, searchTerms: searchTerms})
         }
     })
 }
 
 app.get("/weather", (req, res) => {
-    const searchTerms = ["Japan", "Philippines", "UAE", "Korea", "Britain"]
+    const searchTerms = ["Tokyo", "Davao", "Dubai", "Brazil", "Baghdad", "Somalia"]
     console.log("\nREFRESHED WEATHER PAGE LETSGOOOO")
+    searchTerms.sort()
 
     const dataIndex = req.query.dataIndex || 0;
     const searchTerm = req.query.searchTerm || searchTerms[0]

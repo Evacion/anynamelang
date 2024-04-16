@@ -20,26 +20,36 @@
                     <% } %>
                 </div>
             </center>
-            <table class="table table-dark table-striped">
+            <table class="table table-hover">
                 <thead>
-                    <th scope="col">Image</th>
-                    <th scope="col">Location Name</th>
-                    <th scope="col">Long Lat</th>
-                    <th scope="col">Temperature Celsius</th>
-                    <th scope="col">Skytext</th>
-                    <th scope="col">Date</th>
+                    <th>Location</th>
+                    <th>Temperature</th>
+                    <th>Weather</th>
+                    <th>Day</th>
+                    <th>Low</th>
+                    <th>High</th>
+                    <th>Precip</th>
+                    <th>Humidity</th>
+                    <th>Forecast</th>
                 </thead>
                 <tbody>
-                    <% for(var x=0; weatherData[0].length > x; x++) { %>
-                        <tr>
-                            <td> test </td>
-                            <td> <%= weatherData[0].data[0].location.name %> </td>
-                            <td> <%= weatherData[0].data[0].location.long %>, <%= weatherData[dataIndex].data[x].location.lat %> </td>
-                            <td> <%= weatherData[0].data[0].current.temperature %> </td>
-                            <td> <%= weatherData[0].data[0].current.skytext %> </td>
-                            <td> <%= weatherData[0].data[0].current.date %> </td>
-                        </tr>
-                    <% } %>
+                    <% console.log(weatherData) %>
+                    <% weatherData.forEach(entry => { %>
+                      <tr>
+                        <td><%= entry.location.name %></td>
+                        <td><%= entry.current.temperature %>°C</td>
+                        <td>
+                            <%= entry.current.skytext %><br>
+                            <img src="<%= entry.current.imageUrl %>" alt="Weather GIF">
+                        </td>
+                        <td><%= entry.current.day %></td>
+                        <td><%= entry.forecast[0].low %></td>
+                        <td><%= entry.forecast[0].high %></td>
+                        <td><%= entry.forecast[0].precip %></td>
+                        <td><%= entry.current.humidity %></td>
+                        <td><%= entry.forecast[1].date %><br><%= entry.forecast[1].skytextday %></td>
+                      </tr>
+                    <% }); %>
                 </tbody>
             </div>
         </div>
