@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
     <head>
-        <title>My Portfolio</title>
+        <title>Weather Page</title>
         <%- include("../partials/head.ejs") %>
         <script src="/scripts/getCountryFlag.js"></script>
         <style>
@@ -12,6 +12,7 @@
         </style>
     </head>
     <body>
+        <% console.log("PAGE LOADED") %>
         <div id="navbarLocation"></div>
         <div class="demo-wrap">
             <center>
@@ -44,9 +45,9 @@
                     <% weatherData.forEach(entry => { %>
                       <tr>
                         <td class="text-center">
-                            <b class="font-weight-bold"><%= entry.location.name %></b> <br>
-                            Lattitude: <%= entry.location.lat %> <br> 
-                            Longitude: <%= entry.location.long %>
+                            <p><b class="font-weight-bold"><%= entry.location.name %></b> </p><br>
+                            <p>Lattitude: <%= entry.location.lat %><br>
+                            Longitude: <%= entry.location.long %></p>
                             <div class="hiddenJSON" hidden>
                                 <%= console.log(`[${(entry.location.name)}] as observed from [${(entry.current.observationpoint)}] @ [${entry.location.lat}, ${entry.location.long}] `) %>
                             </div>
@@ -72,7 +73,7 @@
                 </tbody>
             </div>
         </div>
-        <footer><center>Created By Amogus</center></footer>
+        <footer class="footer"><center>Created By Amogus</center></footer>
     </body>
 </html>
 <script>
