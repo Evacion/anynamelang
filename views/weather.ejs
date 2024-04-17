@@ -27,6 +27,7 @@
                     <th>Day</th>
                     <th>Low</th>
                     <th>High</th>
+                    <th>Blob</th>
                     <th>Forecast 1</th>
                     <th>Forecast 2</th>
                     <th>Forecast 3</th>
@@ -43,6 +44,9 @@
                         <td><%= entry.current.day %></td>
                         <td><%= entry.forecast[0].low %>°C</td>
                         <td><%= entry.forecast[0].high %>°C</td>
+                        <td>
+                            <img src="<%= entry.location.imagerelativeurl %>" alt="Weather GIF">
+                        </td>
                         <td><%= entry.forecast[1].date %><br><%= entry.forecast[1].skytextday %></td>
                         <td><%= entry.forecast[2].date %><br><%= entry.forecast[2].skytextday %></td>
                         <td><%= entry.forecast[3].date %><br><%= entry.forecast[3].skytextday %></td>
