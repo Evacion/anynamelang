@@ -44,25 +44,29 @@ app.get("/portfolio", (req, res) => {
     // return res.sendFile(__dirname + "/portfolio.html") 
 })
 
-function weatherFindRecursive(res, arr, prevResult, dataIndex) {
-    weather.find({search: arr[0], degreeType: 'C'}, function (err, result) {
-        if (err) { console.log(`THIS IS THE ERROR BOZO: ${err}`) }
-        else {
-            result = [{ data: eval(JSON.stringify(result, null, 2)) }]
-            mergedResults = prevResult.concat(result) 
-            arr.shift()
-            if (arr.length > 0) { weatherFindRecursive(res, arr, mergedResults, dataIndex) } 
-            else { 
-                res.render('weather.ejs', { weatherData: mergedResults, dataIndex: dataIndex}) 
-            }
-        }
-    })
-}
+// function weatherFindRecursive(res, arr, prevResult, dataIndex) {
+//     weather.find({search: arr[0], degreeType: 'C'}, function (err, result) {
+//         if (err) { console.log(`THIS IS THE ERROR BOZO: ${err}`) }
+//         else {
+//             result = [{ data: eval(JSON.stringify(result, null, 2)) }]
+//             mergedResults = prevResult.concat(result) 
+//             arr.shift()
+//             if (arr.length > 0) { weatherFindRecursive(res, arr, mergedResults, dataIndex) } 
+//             else { 
+//                 res.render('weather.ejs', { weatherData: mergedResults, dataIndex: dataIndex}) 
+//             }
+//         }
+//     })
+// }
 
 function weatherFind(res, searchString, dataIndex, searchTerms) {
     weather.find({search: searchString, degreeType: 'C'}, function (err, result) {
         if (err) {  console.log(`THIS IS THE ERROR BOZO: ${err}`); return; }
-        res.render('weather.ejs', { weatherData: eval(JSON.stringify(result, null, 2)), dataIndex: dataIndex, searchTerms: searchTerms})
+        res.render('weather.ejs', { 
+            weatherData: eval(JSON.stringify(result, null, 2)), 
+            dataIndex: dataIndex, 
+            searchTerms: searchTerms, 
+        })
     })
 }
 

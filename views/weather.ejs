@@ -3,6 +3,7 @@
     <head>
         <title>My Portfolio</title>
         <%- include("../partials/head.ejs") %>
+        <script src="/scripts/getCountryFlag.js"></script>
     </head>
     <body>
         <div id="navbarLocation"></div>
@@ -19,6 +20,7 @@
                     <% } %>
                 </div>
             </center>
+            <!-- <span class="fi fi-gr fis"></span> -->
             <table class="table table-hover">
                 <thead>
                     <th>Location</th>
@@ -27,7 +29,7 @@
                     <th>Day</th>
                     <th>Low</th>
                     <th>High</th>
-                    <th>Blob</th>
+                    <th>Flag</th>
                     <th>Forecast 1</th>
                     <th>Forecast 2</th>
                     <th>Forecast 3</th>
@@ -44,12 +46,12 @@
                         <td><%= entry.current.day %></td>
                         <td><%= entry.forecast[0].low %>°C</td>
                         <td><%= entry.forecast[0].high %>°C</td>
-                        <td>
-                            <img src="<%= entry.location.imagerelativeurl %>" alt="Weather GIF">
+                        <td class="latLongVars">
+                            <div id="<%= entry.location.lat %>, <%= entry.location.long %>" hidden></div>
                         </td>
-                        <td><%= entry.forecast[1].date %><br><%= entry.forecast[1].skytextday %></td>
-                        <td><%= entry.forecast[2].date %><br><%= entry.forecast[2].skytextday %></td>
-                        <td><%= entry.forecast[3].date %><br><%= entry.forecast[3].skytextday %></td>
+                        <td><%= entry.forecast[1].skytextday %> on<br><%= entry.forecast[1].date %></td>
+                        <td><%= entry.forecast[2].skytextday %> on<br><%= entry.forecast[2].date %></td>
+                        <td><%= entry.forecast[3].skytextday %> on<br><%= entry.forecast[3].date %></td>
                       </tr>
                     <% }); %>
                 </tbody>
@@ -62,4 +64,37 @@
     function handleButtonClick(event) { window.location.href = `/weather?dataIndex=${event.target.getAttribute('data-index')}&searchTerm=${event.target.innerText}`; }
     var buttons = document.querySelectorAll('.changeIndexButton');
     buttons.forEach(function(button) { button.addEventListener('click', handleButtonClick); });
+
+    async function getCountryFlag(entry, latitude, longitude) {
+        const apiKey = '710d917c0e1746b3aef14975d6ac263a'; // Replace with your API key
+        const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`;
+
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            if (data.results.length > 0) {
+                // Extract the country code from the first result
+                const countryCode = data.results[0].components.country_code.toUpperCase();
+                const flagStyle = "flat"; // Choose the style of the flag
+                const flagSize = "64"; // Choose the size of the flag image
+                const flagImageUrl = `https://www.countryflags.io/${countryCode}/${flagStyle}/${flagSize}.png`;
+                console.log(flagImageUrl)
+                var flagImage = document.createElement('img')
+                flagImage.src = flagImageUrl
+                entry.appendChild(flagImage)
+                return flagImageUrl;
+            } else {
+                throw new Error('No results found');
+            }
+        } catch (error) {
+            console.error('Error fetching country flag:', error);
+            return null;
+        }
+    }
+    var flagCells = document.querySelectorAll('.latLongVars');
+    flagCells.forEach(entry => {
+        console.log(entry.children[0].id.split(","))
+        getCountryFlag(entry, entry.children[0].id.split(",")[0], entry.children[0].id.split(",")[1])
+    })
+
 </script>
