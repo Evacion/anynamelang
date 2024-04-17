@@ -4,6 +4,12 @@
         <title>My Portfolio</title>
         <%- include("../partials/head.ejs") %>
         <script src="/scripts/getCountryFlag.js"></script>
+        <style>
+            /* Custom CSS to vertically center content in td */
+            .table td {
+                vertical-align: middle;
+            }
+        </style>
     </head>
     <body>
         <div id="navbarLocation"></div>
@@ -23,13 +29,13 @@
             <!-- <span class="fi fi-gr fis"></span> -->
             <table class="table table-hover">
                 <thead>
-                    <th>Location</th>
-                    <th>Temperature</th>
+                    <th>Name & Location</th>
+                    <th>Flag</th>
                     <th>Weather</th>
                     <th>Day</th>
+                    <th>Temp</th>
                     <th>Low</th>
                     <th>High</th>
-                    <th>Flag</th>
                     <th>Forecast 1</th>
                     <th>Forecast 2</th>
                     <th>Forecast 3</th>
@@ -37,21 +43,30 @@
                 <tbody>
                     <% weatherData.forEach(entry => { %>
                       <tr>
-                        <td><%= entry.location.name %></td>
-                        <td><%= entry.current.temperature %>°C</td>
-                        <td>
+                        <td class="text-center">
+                            <b class="font-weight-bold"><%= entry.location.name %></b> <br>
+                            Lattitude: <%= entry.location.lat %> <br> 
+                            Longitude: <%= entry.location.long %>
+                            <div class="hiddenJSON" hidden>
+                                <%= console.log(`[${(entry.location.name)}] as observed from [${(entry.current.observationpoint)}] @ [${entry.location.lat}, ${entry.location.long}] `) %>
+                            </div>
+                        </td>
+                        <td class="text-center latLongVars">
+                            <div hidden>
+                                <%= entry.location.lat %>, <%= entry.location.long %>
+                            </div>
+                        </td>
+                        <td class="text-center">
                             <%= entry.current.skytext %><br>
                             <img src="<%= entry.current.imageUrl %>" alt="Weather GIF">
                         </td>
-                        <td><%= entry.current.day %></td>
-                        <td><%= entry.forecast[0].low %>°C</td>
-                        <td><%= entry.forecast[0].high %>°C</td>
-                        <td class="latLongVars">
-                            <div id="<%= entry.location.lat %>, <%= entry.location.long %>" hidden></div>
-                        </td>
-                        <td><%= entry.forecast[1].skytextday %> on<br><%= entry.forecast[1].date %></td>
-                        <td><%= entry.forecast[2].skytextday %> on<br><%= entry.forecast[2].date %></td>
-                        <td><%= entry.forecast[3].skytextday %> on<br><%= entry.forecast[3].date %></td>
+                        <td class="text-center"><%= entry.current.day %></td>
+                        <td class="text-center"><%= entry.current.temperature %>°C</td>
+                        <td class="text-center"><%= entry.forecast[0].low %>°C</td>
+                        <td class="text-center"><%= entry.forecast[0].high %>°C</td>
+                        <td class="text-center"><%= entry.forecast[1].skytextday %> on<br><%= entry.forecast[1].date %></td>
+                        <td class="text-center"><%= entry.forecast[2].skytextday %> on<br><%= entry.forecast[2].date %></td>
+                        <td class="text-center"><%= entry.forecast[3].skytextday %> on<br><%= entry.forecast[3].date %></td>
                       </tr>
                     <% }); %>
                 </tbody>
@@ -73,15 +88,12 @@
             const response = await fetch(apiUrl);
             const data = await response.json();
             if (data.results.length > 0) {
-                // Extract the country code from the first result
-                const countryCode = data.results[0].components.country_code.toUpperCase();
-                const flagStyle = "flat"; // Choose the style of the flag
-                const flagSize = "64"; // Choose the size of the flag image
-                const flagImageUrl = `https://www.countryflags.io/${countryCode}/${flagStyle}/${flagSize}.png`;
-                console.log(flagImageUrl)
+                const countryCode = data.results[0].components.country_code;
+                const flagSize = "48x36"; // Choose the size of the flag image
+                const flagImageUrl = `http://flagcdn.com/${flagSize}/${countryCode.toLowerCase()}.png`;
                 var flagImage = document.createElement('img')
                 flagImage.src = flagImageUrl
-                entry.appendChild(flagImage)
+                entry.appendChild(flagImage)//, entry.children[0])
                 return flagImageUrl;
             } else {
                 throw new Error('No results found');
@@ -93,8 +105,11 @@
     }
     var flagCells = document.querySelectorAll('.latLongVars');
     flagCells.forEach(entry => {
-        console.log(entry.children[0].id.split(","))
-        getCountryFlag(entry, entry.children[0].id.split(",")[0], entry.children[0].id.split(",")[1])
+        getCountryFlag(entry, entry.children[0].innerText.split(",")[0], entry.children[0].innerText.split(",")[1])
     })
 
+    // var hiddenJSON = document.querySelector('.hiddenJSON');
+    // hiddenJSON.forEach(entry => {
+    //     console.log(JSON.parse(entry.innerText));
+    // })
 </script>

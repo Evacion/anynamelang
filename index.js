@@ -71,7 +71,7 @@ function weatherFind(res, searchString, dataIndex, searchTerms) {
 }
 
 app.get("/weather", (req, res) => {
-    const searchTerms = ["Tokyo", "Davao", "Dubai", "Brazil", "Baghdad", "Somalia", "Orleans", "Rome", "Hot Singles"].sort()
+    const searchTerms = ["Tokyo", "Davao", "Dubai", "Brazil", "Baghdad", "Somalia", "Orleans", "Rome", "Hot Singles", "Gaming", "Korea"].sort()
     weatherFind(res, req.query.searchTerm || searchTerms[0], req.query.dataIndex || 0, searchTerms);
 })
 app.get("/navbar", (req, res) => { 
