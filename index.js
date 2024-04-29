@@ -9,6 +9,21 @@ const { aboutData, portfolioData } = require("./data.js")
 const weather = require('weather-js')
 
 
+
+app.post('/AddStudent', async function(req, res){
+    const {name, age, course, subjects} = req.body
+    try {
+        const docRef = await studentcoll.add({
+            name, age, course, subjects
+        })
+        console.log(docRef.id)
+    } catch(e) {
+        console.error(`Error adding student: ${e}`);
+        res.status(500).json({errpr: 'Failed to add student'});
+    }
+})
+
+
 function weatherFind(res, searchString, dataIndex, searchTerms) {
     weather.find({search: searchString, degreeType: 'C'}, function (err, result) {
         if (err) {  console.log(`THIS IS THE ERROR BOZO: ${err}`); return; }
@@ -40,9 +55,9 @@ app.use('/stylesheets', express.static(__dirname + '/stylesheets/'));
 app.use(express.static('public'));
 
 
-app.get("/", (req, res) => { 
-    res.render('home.ejs', {scaredBtn: "Hello", secretBtn: "Hey. It's me, ya boi, with a reminder"})
-})
+// app.get("/", (req, res) => { 
+//     res.render('home.ejs', {scaredBtn: "Hello", secretBtn: "Hey. It's me, ya boi, with a reminder"})
+// })
 app.get("/home", (req, res) => { 
     return res.redirect('/') 
 })
